@@ -1,17 +1,13 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 
-const getDefaultPipelineDisplayName = () => {
+const context = github.context;
 
-}
+const getDefaultPipelineDisplayName = () =>  context.workflow;
 
-const getPipelineId = () => {
+const getPipelineId = () => `${context.payload.repository.url}-context.workflow`;
 
-}
-
-const getDefaultPipelineUrl = () => {
-
-}
+const getDefaultPipelineUrl = () => `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
 
 const getPipeline = () => ({
   id: getPipelineId(),
@@ -25,29 +21,17 @@ const getEnvironment = () => ({
   type: core.getInput('environment-type')
 })
 
-const getDefaultDisplayName = () => {
+const getDefaultDisplayName = () => context.action;
 
-}
+const getDeploymentSequenceNumber = () => context.runId;
 
-const getDeploymentSequenceNumber = () => {
+const getUpdateSequenceNumber = () => parseInt(new Date().getTime() / 1000)
 
-}
+const getUrl = () => getDefaultPipelineUrl();
 
-const getUpdateSequenceNumber = () => {
+const getLastUpdated = () => new Date().toISOString();
 
-}
-
-const getUrl = () => {
-
-}
-
-const getLastUpdated = () => {
-
-}
-
-const getDefaultDescription = () => {
-
-}
+const getDefaultDescription = () => '';
 
 const validateState = (value) => {
   const allowedValues = [
@@ -124,3 +108,4 @@ try {
 } catch (error) {
   core.setFailed(error.message);
 }
+
