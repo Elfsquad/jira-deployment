@@ -20,6 +20,10 @@ inputs:
   pipeline-url: 'Url of the pipeline'
     description: 'Url of the pipeline'
     required: false
+  environment-id:
+    description: 'Id of the deployment'
+    required: false
+    default: 'production'
   environment-type:
     description: 'Environment of the deployment'
     required: false
