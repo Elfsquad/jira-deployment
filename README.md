@@ -8,6 +8,9 @@
 - base-url:
   - description: 'Base url of your Jira instance'
   - required: true
+- issue-keys:
+  - description: Comma delimited list of issue keys
+  - required: true
 - display-name:
   - description: 'Display name of the deployment'
   - required: false
