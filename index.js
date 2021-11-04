@@ -1,5 +1,8 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+import fetch from 'node-fetch';
+
+import { getAccessToken } from './auth';
 
 const context = github.context;
 
@@ -86,26 +89,88 @@ const validateDisplayName = (value) => {
     throw new Error(`The length of the display name(${value.length}) is larger then the max (255).`);
 }
 
-try {
-  const pipeline = getPipeline();
-  const environment = getEnvironment();
-  const displayName = core.getInput('display-name') ?? getDefaultDisplayName();
-  const deploymentSequenceNumber = getDeploymentSequenceNumber();
-  const updateSequenceNumber = getUpdateSequenceNumber();
-  const url = getUrl();
-  const lastUpdated = getLastUpdated();
-  const description = core.getInput('description') ?? getDefaultDescription();
+const getAccessToken = async (clientId, clientSecret) => {
+  const body = {
+    audience: 'api.atlassian.com',
+    grant_type: 'client_credentials',
+    client_id: clientId,
+    client_secret: clientSecret
+  };
+  const bodyAsJson = JSON.stringify(body);
 
-  const clientId = core.getInput('client-id');
-  const clientSecret = core.getInput('client-secret');
-  const state = core.getInput('state');
-
-  validateState(state);
-  validateEnvironment(environment);
-  validatePipeline(pipeline);
-  validateUrl(url);
-  validateDisplayName(displayName);
-} catch (error) {
-  core.setFailed(error.message);
+  const options = {
+    method: 'POST',
+    headers: {
+      accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: bodyAsJson
+  };
+  
+  const response = await fetch('https://api.atlassian.com/oauth/token', options);
+  const data = response.json();
+  return data.access_token;
 }
+
+(async function () {
+  try {
+    const pipeline = getPipeline();
+    const environment = getEnvironment();
+    const displayName = core.getInput('display-name') ?? getDefaultDisplayName();
+    const deploymentSequenceNumber = getDeploymentSequenceNumber();
+    const updateSequenceNumber = getUpdateSequenceNumber();
+    const url = getUrl();
+    const lastUpdated = getLastUpdated();
+    const description = core.getInput('description') ?? getDefaultDescription();
+
+    const clientId = core.getInput('client-id');
+    const clientSecret = core.getInput('client-secret');
+    const state = core.getInput('state');
+
+    validateState(state);
+    validateEnvironment(environment);
+    validatePipeline(pipeline);
+    validateUrl(url);
+    validateDisplayName(displayName);
+
+    const accessToken = getAccessToken(clientId, clientSecret);
+
+    const deployment = {
+      schemaVersion: "1.0",
+      deploymentSequenceNumber: deploymentSequenceNumber,
+      updateSequenceNumber: updateSequenceNumber,
+      displayName: displayName,
+      issueKeys: [],
+      url: url,
+      description: description,
+      lastUpdated: lastUpdated,
+      state: state,
+      pipeline: pipeline,
+      environment: environment
+    }
+
+    const body = { deployments: [deployment] };
+    const bodyAsJson = JSON.stringify(body);
+
+    const options = {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${accessToken}`
+      },
+      body: bodyAsJson
+    };
+    const response = await fetch(`https://api.atlassian.com/jira/deployments/0.1/cloud/${cloudId}/bulk`, options);
+    const responseData = await response.json();
+
+    if (response.rejectedDeployments && response.rejectedDeployments.length > 0) {
+      const rejectedDeployment = response.rejectedDeployments[0];
+      const errors = rejectedDeployment.errors.map(e => e.message).join(', ');
+      core.setFailed(errors);
+    }
+  } catch (error) {
+    core.setFailed(error.message);
+  }
+})();
 
