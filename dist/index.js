@@ -14751,6 +14751,7 @@ const getAccessToken = async (clientId, clientSecret) => {
   
   const response = await fetch('https://api.atlassian.com/oauth/token', options);
   const data = response.json();
+  console.log('Access token response: ', data);
   return data.access_token;
 }
 
