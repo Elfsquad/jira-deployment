@@ -14739,6 +14739,7 @@ const getAccessToken = async (clientId, clientSecret) => {
     client_secret: clientSecret
   };
   const bodyAsJson = JSON.stringify(body);
+  console.log('Access token request: ', bodyAsJson);
 
   const options = {
     method: 'POST',
