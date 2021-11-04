@@ -3,6 +3,7 @@ const github = require('@actions/github');
 import fetch from 'node-fetch';
 
 const context = github.context;
+console.log(JSON.stringify(context));
 
 const getDefaultPipelineDisplayName = () =>  context.workflow;
 
