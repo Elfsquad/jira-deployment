@@ -1,0 +1,16 @@
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  create_deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create deployment
+        uses: stanvanrooy/jira-deployment@main
+        with:
+          client-id: '${{ secrets.CLIENT_ID }}'
+          client-secret: '${{ secrets.CLIENT_SECRET }}'
+          base-url: 'https://elfsquad.atlassian.net'
+
