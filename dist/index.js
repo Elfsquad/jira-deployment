@@ -14676,7 +14676,9 @@ const getUrl = () => getDefaultPipelineUrl();
 
 const getLastUpdated = () => new Date().toISOString();
 
-const getDefaultDescription = () => '';
+const getIssueKeys = () => core.getInput('issue-keys').split(',');
+
+const getDefaultDescription = () => 'Description';
 
 const validateState = (value) => {
   const allowedValues = [
@@ -14731,6 +14733,14 @@ const validateDisplayName = (value) => {
     throw new Error(`The length of the display name(${value.length}) is larger then the max (255).`);
 }
 
+const validateIssueKeys = (value) => {
+  if (value.length != 0) {
+    return;
+  }
+
+  throw new Error('You need to provide atleast one issue key');
+}
+
 const getAccessToken = async (clientId, clientSecret) => {
   const body = {
     audience: 'api.atlassian.com',
@@ -14770,6 +14780,7 @@ const getCloudId = async (baseUrl) => {
     const updateSequenceNumber = getUpdateSequenceNumber();
     const url = getUrl();
     const lastUpdated = getLastUpdated();
+    const issueKeys = getIssueKeys();
     const description = core.getInput('description') || getDefaultDescription();
 
     const baseUrl = core.getInput('base-url');
@@ -14782,6 +14793,7 @@ const getCloudId = async (baseUrl) => {
     validatePipeline(pipeline);
     validateUrl(url);
     validateDisplayName(displayName);
+    validateIssueKeys(issueKeys);
 
     const accessToken = await getAccessToken(clientId, clientSecret);
 
@@ -14790,7 +14802,7 @@ const getCloudId = async (baseUrl) => {
       deploymentSequenceNumber: deploymentSequenceNumber,
       updateSequenceNumber: updateSequenceNumber,
       displayName: displayName,
-      issueKeys: [],
+      issueKeys: [mostRecentIssueKey],
       url: url,
       description: description,
       lastUpdated: lastUpdated,
