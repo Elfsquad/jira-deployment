@@ -14802,7 +14802,7 @@ const getCloudId = async (baseUrl) => {
       deploymentSequenceNumber: deploymentSequenceNumber,
       updateSequenceNumber: updateSequenceNumber,
       displayName: displayName,
-      issueKeys: [mostRecentIssueKey],
+      issueKeys: issueKeys,
       url: url,
       description: description,
       lastUpdated: lastUpdated,
