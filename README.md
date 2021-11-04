@@ -5,6 +5,9 @@
 - client-secret:
   - description: 'The oAuth client secret for your Jira installation'
   - required: true
+- base-url:
+  - description: 'Base url of your Jira instance'
+  - required: true
 - display-name:
   - description: 'Display name of the deployment'
   - required: false

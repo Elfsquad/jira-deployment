@@ -14754,6 +14754,13 @@ const getAccessToken = async (clientId, clientSecret) => {
   return data.access_token;
 }
 
+const getCloudId = async (baseUrl) => {
+  const url = new URL('/_edge/tenant_info', baseUrl);
+  const request = await fetch(url);
+  const data = await request.json();
+  return data.cloudId;
+}
+
 (async function () {
   try {
     const pipeline = getPipeline();
@@ -14765,6 +14772,7 @@ const getAccessToken = async (clientId, clientSecret) => {
     const lastUpdated = getLastUpdated();
     const description = core.getInput('description') ?? getDefaultDescription();
 
+    const baseUrl = core.getInput('base-url');
     const clientId = core.getInput('client-id');
     const clientSecret = core.getInput('client-secret');
     const state = core.getInput('state');
@@ -14803,6 +14811,7 @@ const getAccessToken = async (clientId, clientSecret) => {
       },
       body: bodyAsJson
     };
+    const cloudId = await getCloudId(baseUrl)
     const response = await fetch(`https://api.atlassian.com/jira/deployments/0.1/cloud/${cloudId}/bulk`, options);
     const responseData = await response.json();
 
