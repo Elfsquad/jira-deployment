@@ -14816,7 +14816,7 @@ const getCloudId = async (baseUrl) => {
     const responseData = await response.json();
 
     if (responseData.rejectedDeployments && responseData.rejectedDeployments.length > 0) {
-      const rejectedDeployment = response.rejectedDeployments[0];
+      const rejectedDeployment = responseData.rejectedDeployments[0];
       const errors = rejectedDeployment.errors.map(e => e.message).join(', ');
       core.setFailed(errors);
     }
