@@ -1,41 +1,41 @@
-name: 'Jira Deployment'
-description: 'Publish a Github release as a deployment to Jira'
+name: Jira Deployment
+description: Publish a Github release as a deployment to Jira
 inputs:
   client-id:
-    description: 'The oAuth client id for your Jira installation'
+    description: The oAuth client id for your Jira installation
     required: true
   client-secret:
-    description: 'The oAuth client secret for your Jira installation'
+    description: The oAuth client secret for your Jira installation
     required: true
   base-url:
-    description: 'Base url of your Jira instance'
+    description: Base url of your Jira instance
     required: true
   display-name:
-    description: 'Display name of the deployment'
+    description: Display name of the deployment
     required: false
   state:
-    description: 'State of the deployment'
+    description: State of the deployment
     required: false
-    default: 'successful'
+    default: successful
   pipeline-display-name:
-    description: 'Display name of the pipeline'
+    description: Display name of the pipeline
     required: false
-  pipeline-url: 'Url of the pipeline'
-    description: 'Url of the pipeline'
+  pipeline-url:
+    description: Url of the pipeline
     required: false
   environment-id:
-    description: 'Id of the deployment'
+    description: Id of the deployment
     required: false
-    default: 'production'
+    default: production
   environment-type:
-    description: 'Environment of the deployment'
+    description: Environment of the deployment
     required: false
-    default: 'production'
+    default: production
   environment-display-name:
-    description: 'Display name of the environment'
+    description: Display name of the environment
     required: false
-    default: 'Production'
+    default: Production
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: node16
+  main: dist/index.js
 
