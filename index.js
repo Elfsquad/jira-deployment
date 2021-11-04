@@ -140,7 +140,7 @@ const getCloudId = async (baseUrl) => {
     validateUrl(url);
     validateDisplayName(displayName);
 
-    const accessToken = getAccessToken(clientId, clientSecret);
+    const accessToken = await getAccessToken(clientId, clientSecret);
 
     const deployment = {
       schemaVersion: "1.0",
