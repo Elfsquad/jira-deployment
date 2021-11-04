@@ -12,12 +12,12 @@ const getDefaultPipelineUrl = () => `https://github.com/${context.repo.owner}/${
 
 const getPipeline = () => ({
   id: getPipelineId(),
-  displayName: core.getInput('pipeline-display-name') ?? getDefaultPipelineDisplayName(),
-  url: core.getInput('pipeline-url') ?? getDefaultPipelineUrl()
+  displayName: core.getInput('pipeline-display-name') || getDefaultPipelineDisplayName(),
+  url: core.getInput('pipeline-url') || getDefaultPipelineUrl()
 });
 
 const getEnvironment = () => ({
-  id: core.getInput('environment-id') ?? core.getInput('environment-type'),
+  id: core.getInput('environment-id') || core.getInput('environment-type'),
   displayName: core.getInput('environment-display-name'),
   type: core.getInput('environment-type')
 })
@@ -121,12 +121,12 @@ const getCloudId = async (baseUrl) => {
   try {
     const pipeline = getPipeline();
     const environment = getEnvironment();
-    const displayName = core.getInput('display-name') ?? getDefaultDisplayName();
+    const displayName = core.getInput('display-name') || getDefaultDisplayName();
     const deploymentSequenceNumber = getDeploymentSequenceNumber();
     const updateSequenceNumber = getUpdateSequenceNumber();
     const url = getUrl();
     const lastUpdated = getLastUpdated();
-    const description = core.getInput('description') ?? getDefaultDescription();
+    const description = core.getInput('description') || getDefaultDescription();
 
     const baseUrl = core.getInput('base-url');
     const clientId = core.getInput('client-id');
