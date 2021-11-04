@@ -95,7 +95,6 @@ const getAccessToken = async (clientId, clientSecret) => {
     client_secret: clientSecret
   };
   const bodyAsJson = JSON.stringify(body);
-  console.log('Access token request: ', bodyAsJson);
 
   const options = {
     method: 'POST',
@@ -108,7 +107,6 @@ const getAccessToken = async (clientId, clientSecret) => {
   
   const response = await fetch('https://api.atlassian.com/oauth/token', options);
   const data = await response.json();
-  console.log('Access token response: ', data);
   return data.access_token;
 }
 
@@ -172,10 +170,9 @@ const getCloudId = async (baseUrl) => {
     const cloudId = await getCloudId(baseUrl)
     const response = await fetch(`https://api.atlassian.com/jira/deployments/0.1/cloud/${cloudId}/bulk`, options);
     const responseData = await response.json();
-    console.log('API response: ', responseData);
 
-    if (response.rejectedDeployments && response.rejectedDeployments.length > 0) {
-      const rejectedDeployment = response.rejectedDeployments[0];
+    if (responseData.rejectedDeployments && responseData.rejectedDeployments.length > 0) {
+      const rejectedDeployment = responseData.rejectedDeployments[0];
       const errors = rejectedDeployment.errors.map(e => e.message).join(', ');
       core.setFailed(errors);
     }
