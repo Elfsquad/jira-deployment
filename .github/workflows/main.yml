@@ -13,4 +13,4 @@ jobs:
           client-id: '${{ secrets.CLIENT_ID }}'
           client-secret: '${{ secrets.CLIENT_SECRET }}'
           base-url: 'https://elfsquad.atlassian.net'
-
+          issue-keys: 'EC-95'
