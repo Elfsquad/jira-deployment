@@ -14647,7 +14647,6 @@ const github = __nccwpck_require__(4176);
 
 
 const context = github.context;
-console.log(JSON.stringify(context));
 
 const getDefaultPipelineDisplayName = () =>  context.workflow;
 
