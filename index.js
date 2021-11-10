@@ -143,6 +143,7 @@ const getCloudId = async (baseUrl) => {
     const clientId = core.getInput('client-id');
     const clientSecret = core.getInput('client-secret');
     const state = core.getInput('state');
+    const continueOnError = core.getInput('continue-on-error');
 
     validateState(state);
     validateEnvironment(environment);
@@ -187,13 +188,14 @@ const getCloudId = async (baseUrl) => {
       const rejectedDeployment = responseData.rejectedDeployments[0];
       const errors = rejectedDeployment.errors.map(e => e.message).join(', ');
       
-      const continueOnError = core.getInput('continue-on-error');
       if (!continueOnError) {
         core.setFailed(errors); 
       }
     }
   } catch (error) {
-    core.setFailed(error.message);
+    if (!continueOnError) {
+      core.setFailed(error.message);
+    }
   }
 })();
 
