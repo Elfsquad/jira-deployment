@@ -128,6 +128,7 @@ const getCloudId = async (baseUrl) => {
 }
 
 (async function () {
+  const continueOnError = core.getInput('continue-on-error');
   try {
     const pipeline = getPipeline();
     const environment = getEnvironment();
@@ -143,7 +144,6 @@ const getCloudId = async (baseUrl) => {
     const clientId = core.getInput('client-id');
     const clientSecret = core.getInput('client-secret');
     const state = core.getInput('state');
-    const continueOnError = core.getInput('continue-on-error');
 
     validateState(state);
     validateEnvironment(environment);
