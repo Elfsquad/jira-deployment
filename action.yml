@@ -38,6 +38,9 @@ inputs:
     description: Display name of the environment
     required: false
     default: Production
+  continue-on-error:
+    required: false
+    default: false
 runs:
   using: node12
   main: dist/index.js
