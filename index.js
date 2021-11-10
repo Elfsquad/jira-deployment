@@ -188,6 +188,7 @@ const getCloudId = async (baseUrl) => {
       const rejectedDeployment = responseData.rejectedDeployments[0];
       const errors = rejectedDeployment.errors.map(e => e.message).join(', ');
       
+      console.log('continueOnError: ', continueOnError);
       if (!continueOnError) {
         core.setFailed(errors); 
       }
