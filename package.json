@@ -1,6 +1,6 @@
 {
   "name": "jira-deployment",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,5 +14,8 @@
     "@actions/core": "^1.6.0",
     "@actions/github": "^5.0.0",
     "node-fetch": "^3.0.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.36.1"
   }
 }
