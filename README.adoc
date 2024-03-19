@@ -1,0 +1,60 @@
+= 🚀 Elfsquad Jira Deployment GitHub Action
+:toc: macro
+:toc-title:
+:toclevels: 3
+
+toc::[]
+
+== 🌟 Features
+
+This GitHub Action 🤖 makes your CI/CD pipeline more integrated by automatically publishing your GitHub releases as deployments 🚀 in Jira. It bridges the gap between code commits and project tracking in Jira, bringing transparency and efficiency to your software development process.
+
+== 📋 Prerequisites
+
+Before you dive in, make sure you have:
+
+* A Jira account 🧑‍💻
+* OAuth credentials (client ID and client secret) for your Jira installation 🔐
+
+== 🛠 Setup
+
+Setting up this action is as easy as pie 🍰:
+
+. **Step 1:** Get your Jira OAuth credentials ready.
+. **Step 2:** Add your Jira base URL and other secrets to your GitHub repository's secrets.
+. **Step 3:** Add the action to your workflow.
+
+== 📖 Usage
+
+To use this action in your workflow, sprinkle the following snippet into your `.yml` file:
+
+[source,yaml]
+----
+- name: Deploy to Jira
+  uses: Elfsquad/jira-deployment@1.0.5
+  with:
+    client-id: ${{ secrets.JIRA_CLIENT_ID }}
+    client-secret: ${{ secrets.JIRA_CLIENT_SECRET }}
+    base-url: ${{ secrets.JIRA_BASE_URL }}
+    issue-keys: 'ISSUE-123,ISSUE-456'
+    display-name: 'My Awesome Deployment'
+    # Optional inputs below
+    state: 'successful' # Default: 'successful'
+    environment-id: 'production' # Default: 'production'
+    environment-type: 'production' # Default: 'production'
+    environment-display-name: 'Production' # Default: 'Production'
+----
+
+== 🤝 Support
+
+If you're having a bumpy ride 🎢 or just want to share some love ❤️, visit the GitHub repository:
+
+- https://github.com/Elfsquad/jira-deployment
+
+== 🌱 Contributing
+
+Got a cool idea or a bug fix? Contributions are more than welcome! Feel free to fork the repo, make your changes, and submit a pull request 🤲.
+
+== 📄 License
+
+This project struts under the AGPL-3.0 license - because sharing is caring 💖.
