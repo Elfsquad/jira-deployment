@@ -159,14 +159,19 @@ const getCloudId = async (baseUrl) => {
       deploymentSequenceNumber: deploymentSequenceNumber,
       updateSequenceNumber: updateSequenceNumber,
       displayName: displayName,
-      issueKeys: issueKeys,
       url: url,
       description: description,
       lastUpdated: lastUpdated,
       state: state,
       pipeline: pipeline,
-      environment: environment
-    }
+      environment: environment,
+      associations: [
+        {
+          associationType: "issueIdOrKeys",
+          values: issueKeys.map((k) => k.trim()),
+        },
+      ],
+    };
 
     const body = { deployments: [deployment] };
     const bodyAsJson = JSON.stringify(body);
