@@ -6,7 +6,7 @@ const context = github.context;
 
 const getDefaultPipelineDisplayName = () =>  context.workflow;
 
-const getPipelineId = () => `${context.payload.repository.url}-context.workflow`;
+const getPipelineId = () => `${context.payload.repository.url}-${context.workflow}`;
 
 const getDefaultPipelineUrl = () => `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
 
