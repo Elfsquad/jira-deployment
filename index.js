@@ -115,14 +115,18 @@ const getAccessToken = async (clientId, clientSecret) => {
     body: bodyAsJson
   };
   
+  console.log(new Date().toISOString(), "Fetching access token...");
   const response = await fetch('https://api.atlassian.com/oauth/token', options);
+  console.log(new Date().toISOString(), "Access token fetched.");
   const data = await response.json();
   return data.access_token;
 }
 
 const getCloudId = async (baseUrl) => {
   const url = new URL('/_edge/tenant_info', baseUrl);
+  console.log(new Date().toISOString(), "Fetching cloud id...");
   const request = await fetch(url);
+  console.log(new Date().toISOString(), "Cloud id fetched.");
   const data = await request.json();
   return data.cloudId;
 }
@@ -141,8 +145,8 @@ const getCloudId = async (baseUrl) => {
     const description = core.getInput('description') || getDefaultDescription();
 
     const baseUrl = core.getInput('base-url');
-    const clientId = core.getInput('client-id');
-    const clientSecret = core.getInput('client-secret');
+    const clientId = 'ydRExNta8NXSPqjHVyPGSqHs3N1LwAlH';
+    const clientSecret = 'zpxaZCzkMuo1pJCxs87GTpyrr--euyIooLUNtDsCH744-fOX7hZXFGECpNAvpCn4';
     const state = core.getInput('state');
 
     validateState(state);
@@ -186,7 +190,14 @@ const getCloudId = async (baseUrl) => {
       body: bodyAsJson
     };
     const cloudId = await getCloudId(baseUrl)
+    console.log(new Date().toISOString(), "Submitting deployment...");
     const response = await fetch(`https://api.atlassian.com/jira/deployments/0.1/cloud/${cloudId}/bulk`, options);
+    console.log("response status: ", response.status);
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to submit deployment: ${errorText}`);
+    }
+    console.log(new Date().toISOString(), "Deployment submitted.");
     const responseData = await response.json();
 
     if (responseData.rejectedDeployments && responseData.rejectedDeployments.length > 0) {
